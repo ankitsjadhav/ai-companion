@@ -1,5 +1,4 @@
 import { NavBar } from "@/components/navbar";
-import { SearchFilter } from "@/components/search-input";
 import { SideBar } from "@/components/sidebar";
 
 const LayoutPage = ({ children }) => {

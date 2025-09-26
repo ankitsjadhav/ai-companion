@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "./ui/input";
-import { debounce } from "@/app/hooks/usedebounce";
+import { useDebounce } from "@/app/hooks/usedebounce";
 import queryString from "query-string";
 import { Search } from "lucide-react";
 
@@ -15,11 +15,11 @@ export const SearchInput = () => {
 
   const [search, setSearch] = useState(name || "");
 
-  const debounceValue = debounce(search, 500);
+  const debouncedValue = useDebounce(search, 500);
 
   useEffect(() => {
     const query = {
-      name: debounceValue,
+      name: debouncedValue,
       categoryID: categoryID,
     };
 
@@ -30,8 +30,8 @@ export const SearchInput = () => {
       },
       { skipEmptyString: true, skipNull: true }
     );
-    return router.push(url);
-  }, [debounceValue, router, categoryID]);
+    router.push(url);
+  }, [debouncedValue, router, categoryID]);
 
   return (
     <div className="relative">
