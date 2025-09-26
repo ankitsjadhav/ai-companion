@@ -1,14 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  Home,
-  HomeIcon,
-  PlusIcon,
-  Settings,
-  Settings2Icon,
-  SettingsIcon,
-} from "lucide-react";
+import { Home, PlusIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
