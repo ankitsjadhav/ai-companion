@@ -2,12 +2,13 @@
 
 import { cn } from "@/lib/utils";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
 
 export const Categories = ({ data }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const categoryId = searchParams.get("categoryId");
   const onClick = (id) => {
@@ -15,7 +16,7 @@ export const Categories = ({ data }) => {
 
     const url = queryString.stringifyUrl(
       {
-        url: window.location.pathname,
+        url: pathname,
         query,
       },
       { skipNull: true }
