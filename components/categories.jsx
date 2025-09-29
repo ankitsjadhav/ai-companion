@@ -15,7 +15,7 @@ export const Categories = ({ data }) => {
 
     const url = queryString.stringifyUrl(
       {
-        url: window.location.href,
+        url: window.location.pathname,
         query,
       },
       { skipNull: true }
