@@ -1,4 +1,4 @@
-import { CompanionForm } from "@/components/companionForm";
+import { CompanionForm } from "@/app/(root)/(routes)/companion/[companionId]/components/companionForm";
 import prismadb from "@/lib/prismadb";
 
 const CompanionIdPage = async ({ params }) => {
