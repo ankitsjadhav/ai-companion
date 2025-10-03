@@ -4,6 +4,8 @@ import { CldUploadButton } from "next-cloudinary";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
 export const ImageUpload = ({ value, onChange, disabled }) => {
   console.log("Current value:", value);
   const [isMounted, setIsMounted] = useState(false);
@@ -30,7 +32,7 @@ export const ImageUpload = ({ value, onChange, disabled }) => {
         options={{
           maxFiles: 1,
         }}
-        uploadPreset="o6rfx7hi"
+        uploadPreset={uploadPreset}
       >
         <div className="p-4 border-4 border-dashed rounded-lg hover:opacity-75 transition flex flex-col space-y-2 items-center justify-center">
           <div className="relative h-40 w-40">
