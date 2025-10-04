@@ -1,6 +1,6 @@
 "use client";
 
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

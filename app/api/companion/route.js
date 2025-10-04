@@ -8,7 +8,7 @@ export async function POST(req) {
     const user = await currentUser();
     const { src, name, description, instructions, seed, categoryId } = body;
 
-    if (!user || !user.id || !user.firstName) {
+    if (!user || !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -23,11 +23,13 @@ export async function POST(req) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
+    const displayName = user.username ?? user.firstName ?? "";
+
     const companion = await prismadb.companion.create({
       data: {
         categoryId,
         userId: user.id,
-        username: user.firstName,
+        username: displayName,
         src,
         name,
         description,
