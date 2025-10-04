@@ -12,7 +12,7 @@ export async function PATCH(req, { params }) {
       return new NextResponse("Companion ID is required", { status: 400 });
     }
 
-    if (!user || !user.id || !user.firstName) {
+    if (!user || !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -26,7 +26,7 @@ export async function PATCH(req, { params }) {
     ) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
-
+    const displayName = user.username ?? user.firstName ?? "";
     const companion = await prismadb.companion.update({
       where: {
         id: params.companionId,
@@ -35,7 +35,7 @@ export async function PATCH(req, { params }) {
       data: {
         categoryId,
         userId: user.id,
-        username: user.firstName,
+        username: displayName,
         src,
         name,
         description,
