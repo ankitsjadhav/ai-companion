@@ -22,20 +22,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={cn(
-            "bg-secondary",
-            `${geistSans.variable} ${geistMono.variable} antialiased`
-          )}
-        >
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          "bg-secondary",
+          `${geistSans.variable} ${geistMono.variable} antialiased`
+        )}
+      >
+        <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
             <Toaster />
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
