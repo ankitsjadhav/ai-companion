@@ -6,10 +6,13 @@ import prismadb from "@/lib/prismadb";
 const RootPage = async ({ searchParams }) => {
   const data = await prismadb.companion.findMany({
     where: {
-      categoryId: searchParams.categoryId,
-      name: {
-        search: searchParams.name,
-      },
+      ...(searchParams.categoryId && { categoryId: searchParams.categoryId }),
+      ...(searchParams.name && {
+        name: {
+          contains: searchParams.name,
+          mode: "insensitive",
+        },
+      }),
     },
     orderBy: {
       createdAt: "desc",

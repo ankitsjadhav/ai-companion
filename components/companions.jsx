@@ -6,7 +6,7 @@ import { MessagesSquare } from "lucide-react";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 
 export const Companions = ({ data }) => {
-  if (data.length === 0)
+  if (!data || data.length === 0)
     return (
       <div className="pt-10 flex flex-col items-center justify-center space-y-3">
         <div className="relative w-60 h-60">
