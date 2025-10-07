@@ -4,12 +4,15 @@ import { SearchInput } from "@/components/search-input";
 import prismadb from "@/lib/prismadb";
 
 const RootPage = async ({ searchParams }) => {
+  const resolvedSearchParams = await searchParams;
   const data = await prismadb.companion.findMany({
     where: {
-      ...(searchParams.categoryId && { categoryId: searchParams.categoryId }),
-      ...(searchParams.name && {
+      ...(resolvedSearchParams.categoryId && {
+        categoryId: resolvedSearchParams.categoryId,
+      }),
+      ...(resolvedSearchParams.name && {
         name: {
-          contains: searchParams.name,
+          contains: resolvedSearchParams.name,
           mode: "insensitive",
         },
       }),
