@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ChatMessage from "@/components/chat-message";
 
 export default function ChatMessages({ companion, isLoading, messages = [] }) {
-  console.log("ChatMessages received:", messages);
   const scrollRef = useRef(null);
 
   const [fakeLoading, setFakeLoading] = useState(
@@ -43,6 +42,7 @@ export default function ChatMessages({ companion, isLoading, messages = [] }) {
           src={companion.src}
         />
       ))}
+      {isLoading && <ChatMessage role="system" src={companion.src} isLoading />}
 
       <div ref={scrollRef} />
     </div>

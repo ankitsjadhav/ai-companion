@@ -12,7 +12,7 @@ async function ChatIdPage({ params }) {
   if (!userId) return redirect("/sign-in");
 
   const companion = await prismadb.companion.findUnique({
-    where: { id: resolvedParams.chatId },
+    where: { id: resolvedParams.chatId, userId: userId },
     include: {
       messages: { orderBy: { createdAt: "asc" } },
       _count: { select: { messages: true } },
@@ -20,11 +20,6 @@ async function ChatIdPage({ params }) {
   });
 
   if (!companion) return redirect("/");
-
-  console.log(
-    `[SERVER PAGE] Fetched data for companion ${companion.id}:`,
-    JSON.stringify(companion.messages, null, 2)
-  );
 
   return <ChatClient companion={companion} />;
 }
