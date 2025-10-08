@@ -7,9 +7,9 @@ import {
   SheetTitle,
   SheetDescription,
 } from "./ui/sheet";
-import { SideBar } from "./sidebar";
+import Sidebar from "./sidebar";
 
-export const MobileSideBar = () => {
+export const MobileSideBar = ({ isPro }) => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4">
@@ -20,7 +20,7 @@ export const MobileSideBar = () => {
         <SheetDescription className="sr-only">
           Access navigation options
         </SheetDescription>
-        <SideBar />
+        <Sidebar isPro={isPro} />
       </SheetContent>
     </Sheet>
   );

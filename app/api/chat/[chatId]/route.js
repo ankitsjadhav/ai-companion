@@ -96,13 +96,14 @@ export async function POST(request, { params }) {
     const modelResponse = await model.invoke(messages);
     const rawAiResponse =
       modelResponse?.content?.toString() ||
-      "Sorry, I could not generate a response.";
+      "I took a coffee break ☕️ — your prompt's still waiting! Send it again?";
 
     const cleanedAiResponse =
       rawAiResponse
         .replace(/^(Human:|User:).*\n?/gm, "")
         .replace(new RegExp(`^${prompt.trim()}\\n?`, "gm"), "")
-        .trim() || "Sorry, I could not generate a response.";
+        .trim() ||
+      "I took a coffee break ☕️ — your prompt's still waiting! Send it again?";
 
     saveMessagesToDb(prompt, cleanedAiResponse, user.id, chatId);
 
