@@ -2,11 +2,14 @@ import { Companions } from "@/components/companions";
 import { Categories } from "@/components/categories";
 import { SearchInput } from "@/components/search-input";
 import prismadb from "@/lib/prismadb";
+import { auth } from "@clerk/nextjs/server";
 
 const RootPage = async ({ searchParams }) => {
+  const { userId } = await auth();
   const resolvedSearchParams = await searchParams;
   const data = await prismadb.companion.findMany({
     where: {
+      userId,
       ...(resolvedSearchParams.categoryId && {
         categoryId: resolvedSearchParams.categoryId,
       }),

@@ -32,7 +32,7 @@ export async function PATCH(req, { params }) {
 
     if (!isPro) {
       return new NextResponse(
-        "Pro Subscription is Required to Create New Companion.",
+        "Pro Subscription is Required to Update Companion.",
         { status: 403 }
       );
     }

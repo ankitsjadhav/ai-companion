@@ -21,7 +21,7 @@ export default function Sidebar({ isPro }) {
       icon: PlusIcon,
       href: "/companion/new",
       label: "Create",
-      pro: true,
+      pro: false,
     },
     {
       icon: SettingsIcon,

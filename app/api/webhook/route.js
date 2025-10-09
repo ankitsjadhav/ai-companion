@@ -206,7 +206,7 @@ export async function POST(req) {
           "[WEBHOOK] Failed to retrieve subscription:",
           err?.message
         );
-        return new NextResponse(null, { status: 200 });
+        return new NextResponse("temporary failure", { status: 500 });
       }
 
       let userId = await findUserId({
@@ -262,7 +262,7 @@ export async function POST(req) {
       } catch (err) {
         console.error("[WEBHOOK] DB upsert failed:", err?.message, err);
 
-        return new NextResponse(null, { status: 200 });
+        return new NextResponse("temporary failure", { status: 500 });
       }
 
       return new NextResponse(null, { status: 200 });

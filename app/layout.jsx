@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
           "bg-secondary",
           `${geistSans.variable} ${geistMono.variable} antialiased`
         )}
+        suppressHydrationWarning={true}
       >
         <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

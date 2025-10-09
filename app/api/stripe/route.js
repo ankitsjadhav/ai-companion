@@ -16,15 +16,11 @@ export async function GET() {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    console.log("🔍 Creating Stripe session for userId:", userId);
-    console.log("📧 User email:", user.emailAddresses[0].emailAddress);
-
     const userSubscription = await prismadb.userSubscription.findUnique({
       where: { userId },
     });
 
     if (userSubscription && userSubscription.stripeCustomerId) {
-      console.log("👤 Existing customer found, redirecting to billing portal");
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: settingsUrl,
@@ -32,8 +28,6 @@ export async function GET() {
 
       return new NextResponse(JSON.stringify({ url: stripeSession.url }));
     }
-
-    console.log("🆕 Creating new subscription checkout session");
 
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: settingsUrl,
@@ -67,12 +61,9 @@ export async function GET() {
       },
     });
 
-    console.log("✅ Stripe session created:", stripeSession.id);
-    console.log("🔗 Session URL:", stripeSession.url);
-
     return new NextResponse(JSON.stringify({ url: stripeSession.url }));
   } catch (error) {
-    console.error("❌ [STRIPE ERROR]", error);
+    console.error("[STRIPE_ERROR]", error.message, { errorId: error.id });
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

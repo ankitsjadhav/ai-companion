@@ -13,14 +13,11 @@ export default function SubscriptionButton({ isPro }) {
   const onClick = async () => {
     try {
       setLoading(true);
-      console.log("🔍 Making Stripe API call...");
 
       const response = await axios.get("/api/stripe");
-      console.log("✅ Stripe response:", response.data);
 
       window.location.href = response.data.url;
     } catch (error) {
-      // console.error("❌ Stripe error:", error.response?.data || error.message);
       toast.error("Something Went Wrong!");
     } finally {
       setLoading(false);

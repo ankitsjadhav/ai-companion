@@ -23,13 +23,20 @@ export async function POST(req) {
     ) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
-    const isPro = await checkSubscription();
+    // const isPro = await checkSubscription();
 
-    if (!isPro) {
-      return new NextResponse(
-        "Pro Subscription is Required to Create New Companion.",
-        { status: 403 }
-      );
+    const existingCompanions = await prismadb.companion.count({
+      where: { userId: user.id },
+    });
+
+    if (existingCompanions >= 1) {
+      const isPro = await checkSubscription();
+      if (!isPro) {
+        return new NextResponse(
+          "Pro Subscription is Required to Create Additional Companions.",
+          { status: 403 }
+        );
+      }
     }
 
     const displayName = user.username ?? user.firstName ?? "";
