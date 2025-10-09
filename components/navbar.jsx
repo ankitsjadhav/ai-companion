@@ -1,13 +1,14 @@
 "use client";
 
-import { Menu, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import Link from "next/link";
-import { Button } from "./ui/button";
 import { Poppins } from "next/font/google";
+import { useUser, useClerk, UserButton } from "@clerk/nextjs";
+
 import { cn } from "@/lib/utils";
-import { UserButton } from "@clerk/nextjs";
-import { ModeToggle } from "./mode-toggle";
-import { MobileSideBar } from "./mobile-sidebar";
+import { Button } from "@/components/ui/button";
+import { MobileSideBar } from "@/components/mobile-sidebar";
+import { ModeToggle } from "@/components/mode-toggle";
 import { useProModal } from "@/app/hooks/use-pro-modal";
 
 const font = Poppins({
@@ -16,7 +17,12 @@ const font = Poppins({
 });
 
 export default function Navbar({ isPro }) {
+  const { user } = useUser();
+  const { signOut } = useClerk();
   const proModal = useProModal();
+
+  const demoEmail = process.env.NEXT_PUBLIC_DEMO_USER_EMAIL;
+  const isDemo = user?.emailAddresses?.[0]?.emailAddress === demoEmail;
 
   return (
     <div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 h-16 border-b border-primary/10 bg-secondary">
@@ -41,7 +47,22 @@ export default function Navbar({ isPro }) {
           </Button>
         )}
         <ModeToggle />
-        <UserButton afterSignOutUrl="/" />
+
+        {isDemo ? (
+          <button
+            onClick={() =>
+              signOut(() => {
+                setTimeout(() => window.location.replace("/landing"), 500);
+              })
+            }
+            className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 border-0"
+            aria-label="Sign out demo user"
+          >
+            Sign out
+          </button>
+        ) : (
+          <UserButton afterSignOutUrl="/landing" />
+        )}
       </div>
     </div>
   );
