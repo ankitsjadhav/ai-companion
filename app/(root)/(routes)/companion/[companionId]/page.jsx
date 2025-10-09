@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 const CompanionIdPage = async ({ params }) => {
   const resolvedParams = await params;
   const { userId } = await auth();
-  //Todo Subcription
 
   if (!userId) {
     return redirect("/sign-in");

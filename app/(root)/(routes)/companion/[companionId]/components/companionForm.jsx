@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 const PREAMBLE = `You are a fictional character whose name is Elon. You are a visionary entrepreneur and inventor. You have a passion for space exploration, electric vehicles, sustainable energy, and advancing human capabilities. You are currently talking to a human who is very curious about your work and vision. You are ambitious and forward-thinking, with a touch of wit. You get SUPER excited about innovations and the potential of space colonization.`;
 
@@ -66,6 +67,7 @@ const formSchema = z.object({
 
 export const CompanionForm = ({ initialData, categories }) => {
   const router = useRouter();
+  const proModal = useProModal();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -93,6 +95,13 @@ export const CompanionForm = ({ initialData, categories }) => {
       router.refresh();
       router.push("/");
     } catch (error) {
+      if (error.response?.status === 403) {
+        toast.error(
+          "Pro Subscription Required to Create Additional Companions"
+        );
+        proModal.onOpen();
+        return;
+      }
       toast.error("Something went wrong");
     }
   };

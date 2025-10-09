@@ -1,6 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { checkSubscription } from "@/lib/subscription";
 
 export async function POST(req) {
   try {
@@ -21,6 +22,21 @@ export async function POST(req) {
       !categoryId
     ) {
       return new NextResponse("Missing required fields", { status: 400 });
+    }
+    // const isPro = await checkSubscription();
+
+    const existingCompanions = await prismadb.companion.count({
+      where: { userId: user.id },
+    });
+
+    if (existingCompanions >= 1) {
+      const isPro = await checkSubscription();
+      if (!isPro) {
+        return new NextResponse(
+          "Pro Subscription is Required to Create Additional Companions.",
+          { status: 403 }
+        );
+      }
     }
 
     const displayName = user.username ?? user.firstName ?? "";
