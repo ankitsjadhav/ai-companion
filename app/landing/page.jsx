@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import DemoLoginButton from "@/components/demo-login"; // the DemoLoginButton component
+import DemoLoginButton from "@/components/demo-login";
 
 export default function LandingPage() {
   const handleSignIn = () => {

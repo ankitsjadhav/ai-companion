@@ -14,7 +14,6 @@ export default function DemoLoginButton() {
     if (!isLoaded || loading) return;
 
     if (user) {
-      // Already logged in, redirect
       router.push("/");
       return;
     }
