@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { LogOut, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { useUser, useClerk, UserButton } from "@clerk/nextjs";
@@ -55,10 +55,10 @@ export default function Navbar({ isPro }) {
                 setTimeout(() => window.location.replace("/landing"), 500);
               })
             }
-            className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 border-0"
+            className="p-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 border-0 flex items-center justify-center"
             aria-label="Sign out demo user"
           >
-            Sign out
+            <LogOut className="h-4 w-4" />
           </button>
         ) : (
           <UserButton afterSignOutUrl="/landing" />
