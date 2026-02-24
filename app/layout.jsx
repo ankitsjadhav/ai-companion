@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
       >
         <ClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <ProModal />
             {children}
             <Toaster />
