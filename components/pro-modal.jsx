@@ -3,6 +3,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useUser } from "@clerk/nextjs";
 
 import {
   Dialog,
@@ -21,12 +22,20 @@ export default function ProModal() {
   const proModal = useProModal();
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+
+  const demoEmail = process.env.NEXT_PUBLIC_DEMO_USER_EMAIL;
+  const isDemo = user?.emailAddresses?.[0]?.emailAddress === demoEmail;
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   const onSubscribe = async () => {
+    if (isDemo) {
+      toast.info("Billing functionality is disabled in demo mode.");
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.get("/api/stripe");
