@@ -42,6 +42,7 @@ export async function POST(request, { params }) {
       companionName: companion.name,
       userId: user.id,
       modelName: "gemini-2.5-flash",
+      companionId: companion.id,
     };
 
     const memoryManager = await MemoryManager.getInstance();
