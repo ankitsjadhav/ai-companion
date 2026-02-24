@@ -105,7 +105,7 @@ export async function POST(request, { params }) {
         .trim() ||
       "I took a coffee break ☕️ — your prompt's still waiting! Send it again?";
 
-    saveMessagesToDb(prompt, cleanedAiResponse, user.id, chatId);
+    await saveMessagesToDb(prompt, cleanedAiResponse, user.id, chatId);
 
     await memoryManager.writeToHistory(
       `${companion.name}: ${cleanedAiResponse}\n`,
@@ -121,24 +121,23 @@ export async function POST(request, { params }) {
 
 async function saveMessagesToDb(prompt, cleanedAiResponse, userId, chatId) {
   try {
-    await Promise.all([
-      prismadb.message.create({
-        data: {
-          content: prompt,
-          role: "user",
-          userId: userId,
-          companionId: chatId,
-        },
-      }),
-      prismadb.message.create({
-        data: {
-          content: cleanedAiResponse,
-          role: "system",
-          userId: userId,
-          companionId: chatId,
-        },
-      }),
-    ]);
+    await prismadb.message.create({
+      data: {
+        content: prompt,
+        role: "user",
+        userId: userId,
+        companionId: chatId,
+      },
+    });
+
+    await prismadb.message.create({
+      data: {
+        content: cleanedAiResponse,
+        role: "system",
+        userId: userId,
+        companionId: chatId,
+      },
+    });
   } catch (dbError) {
     console.error("[DB_SAVE_ERROR] Failed to save messages:", dbError);
   }
