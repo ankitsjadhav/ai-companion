@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "bg-secondary",
+          "bg-white dark:bg-[#0B1220] dark:bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] dark:from-[#0F1B2E] dark:via-[#0B1220] dark:to-[#0B1220]",
           `${geistSans.variable} ${geistMono.variable} antialiased`
         )}
         suppressHydrationWarning={true}

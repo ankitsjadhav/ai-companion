@@ -25,7 +25,7 @@ export default function Navbar({ isPro }) {
   const isDemo = user?.emailAddresses?.[0]?.emailAddress === demoEmail;
 
   return (
-    <div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 h-16 border-b border-primary/10 bg-secondary">
+    <div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 h-16 border-b border-primary/10 bg-secondary dark:bg-[#0B1220]/50 dark:backdrop-blur-xl dark:border-white/5">
       <div className="flex items-center">
         <MobileSideBar isPro={isPro} />
         <Link href="/">
