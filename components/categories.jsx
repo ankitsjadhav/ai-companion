@@ -1,53 +1,64 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-
+import React, { useMemo, useCallback, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
+import { Tabs } from "@/components/ui/tabs";
 
 export const Categories = ({ data }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const categoryId = searchParams.get("categoryId");
-  const onClick = (id) => {
-    const query = { categoryId: id };
+  const currentName = searchParams.get("name");
 
-    const url = queryString.stringifyUrl(
-      {
-        url: pathname,
-        query,
-      },
-      { skipNull: true }
-    );
+  const mappedTabs = useMemo(() => {
+    return [
+      { title: "Newest", value: "newest", content: <div /> },
+      ...data.map((item) => ({
+        title: item.name,
+        value: item.id,
+        content: <div />,
+      })),
+    ];
+  }, [data]);
 
-    router.push(url);
-  };
+  const handleClick = useCallback(
+    (id) => {
+      const url = queryString.stringifyUrl(
+        {
+          url: pathname,
+          query: {
+            categoryId: id,
+            name: currentName,
+          },
+        },
+        { skipNull: true, skipEmptyString: true }
+      );
+
+      startTransition(() => {
+        router.replace(url, { scroll: false });
+      });
+    },
+    [pathname, router, currentName]
+  );
 
   return (
-    <div className="w-full overflow-x-auto space-x-2 flex p-1">
-      <button
-        onClick={() => onClick(undefined)}
-        className={cn(
-          `flex items-center text-center text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 rounded-md bg-primary/10 hover:opacity-75 transition cursor-pointer`,
-          !categoryId ? "bg-primary/25" : "bg-primary/10"
-        )}
-      >
-        Newest
-      </button>
-      {data.map((item) => (
-        <button
-          onClick={() => onClick(item.id)}
-          key={item.id}
-          className={cn(
-            `flex items-center text-center text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 rounded-md bg-primary/10 hover:opacity-75 transition cursor-pointer`,
-            item.id === categoryId ? "bg-primary/25" : "bg-primary/10"
-          )}
-        >
-          {item.name}
-        </button>
-      ))}
+    <div className="w-full mt-2 md:mt-4 mb-4 md:mb-6 flex justify-start sm:justify-center px-4 md:px-2 overflow-x-auto no-scrollbar pt-2 pb-4">
+      <div className="w-fit flex">
+        <Tabs
+          tabs={mappedTabs}
+          containerClassName="gap-2 md:gap-3"
+          onTabClick={(tab) =>
+            handleClick(tab.value === "newest" ? undefined : tab.value)
+          }
+          activeTabClassName="bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-md text-white rounded-xl md:rounded-2xl"
+          tabClassName="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 md:px-7 md:py-4 rounded-xl md:rounded-2xl bg-secondary/40 text-secondary-foreground text-xs md:text-sm font-medium border border-white/5 hover:bg-secondary hover:-translate-y-[1px] active:translate-y-0 transition-all duration-200"
+        />
+      </div>
     </div>
   );
 };
+
