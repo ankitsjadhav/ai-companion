@@ -1,5 +1,5 @@
 const ChatLayout = ({ children }) => {
-  return <div className="mx-auto max-w-4xl h-full w-full">{children}</div>;
+  return <div className="chat-wrapper mx-auto max-w-4xl h-screen w-full flex flex-col">{children}</div>;
 };
 
 export default ChatLayout;

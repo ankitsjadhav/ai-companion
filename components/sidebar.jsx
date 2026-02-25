@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Home, PlusIcon, SettingsIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useProModal } from "@/app/hooks/use-pro-modal";
+import { FloatingDock } from "@/components/ui/floating-dock";
 
 export default function Sidebar({ isPro }) {
   const pathname = usePathname();
@@ -37,27 +38,19 @@ export default function Sidebar({ isPro }) {
     return router.push(url);
   };
 
+  const dockItems = routes.map((route) => ({
+    title: route.label,
+    icon: <route.icon className="h-full w-full" />,
+    href: route.href,
+    onClick: (e) => {
+      e.preventDefault();
+      onNavigate(route.href, route.pro);
+    }
+  }));
+
   return (
-    <div className="space-y-4 flex flex-col h-full text-primary bg-secondary dark:bg-transparent dark:border-r dark:border-white/5">
-      <div className="p-3 flex-1 flex justify-center">
-        <div className="space-y-2">
-          {routes.map((route) => (
-            <div
-              key={route.href}
-              onClick={() => onNavigate(route.href, route.pro)}
-              className={cn(
-                "text-muted-foreground text-xs group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-primary hover:bg-primary/10 rounded-lg transition",
-                pathname === route.href && "bg-primary/10 text-primary"
-              )}
-            >
-              <div className="flex flex-col gap-y-2 items-center flex-1">
-                <route.icon className="h-5 w-5" />
-                {route.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className="flex items-center justify-center w-full relative z-50">
+      <FloatingDock items={dockItems} />
     </div>
   );
 }
