@@ -70,7 +70,7 @@ export function PlaceholdersAndVanishInput({
         transition={{ duration: 0.25 }}
         className={cn(
           "w-full h-full bg-transparent border-none focus:outline-none",
-          "text-sm sm:text-base px-4 sm:px-10 pr-20",
+          "text-base px-4 sm:px-10 pr-20",
           "dark:text-white text-black"
         )}
       />
@@ -109,7 +109,7 @@ export function PlaceholdersAndVanishInput({
               animate={{ y: 0, opacity: 0.6 }}
               exit={{ y: -10, opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="text-sm sm:text-base pl-4 sm:pl-10 truncate w-[calc(100%-2rem)] text-neutral-500 dark:text-zinc-500"
+              className="text-base pl-4 sm:pl-10 truncate w-[calc(100%-2rem)] text-neutral-500 dark:text-zinc-500"
             >
               {placeholders[currentPlaceholder]}
             </motion.p>
