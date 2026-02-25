@@ -7,11 +7,13 @@ const LayoutPage = async ({ children }) => {
   return (
     <div className="h-full">
       <Navbar isPro={isPro} />
-      <div className="hidden md:flex mt-16 w-20 flex-col fixed inset-y-0 ">
-        <Sidebar isPro={isPro} />
+      <div className="fixed bottom-6 right-6 md:inset-x-0 md:right-auto z-50 md:flex md:justify-center w-auto md:w-full pointer-events-none">
+        <div className="pointer-events-auto">
+          <Sidebar isPro={isPro} />
+        </div>
       </div>
 
-      <main className="md:pl-20 pt-16 h-full">{children}</main>
+      <main className="md:pl-20 lg:pl-28 pt-2 md:pt-4 pb-24 h-full">{children}</main>
     </div>
   );
 };

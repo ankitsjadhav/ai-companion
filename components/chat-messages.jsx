@@ -25,7 +25,7 @@ export default function ChatMessages({ companion, isLoading, messages = [] }) {
   }, [messages.length]);
 
   return (
-    <div className="flex-1 overflow-y-auto pr-4">
+    <div className="flex-1 overflow-y-auto min-h-0 pr-4">
       <ChatMessage
         key="greeting"
         isLoading={fakeLoading}

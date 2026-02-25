@@ -66,19 +66,21 @@ export default function ChatClient({ companion }) {
   };
 
   return (
-    <div className="flex flex-col h-full p-4 space-y-2">
+    <div className="flex-1 flex flex-col pt-4 px-4 pb-0 space-y-2 min-h-0">
       <ChatHeader companion={companion} />
       <ChatMessages
         companion={companion}
         isLoading={isLoading}
         messages={messages}
       />
-      <ChatForm
-        handleInputChange={handleInputChange}
-        input={input}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-      />
+      <div className="flex-shrink-0">
+        <ChatForm
+          handleInputChange={handleInputChange}
+          input={input}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 }

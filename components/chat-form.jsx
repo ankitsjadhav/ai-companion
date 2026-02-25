@@ -1,10 +1,7 @@
 "use client";
 
 import React from "react";
-import { SendHorizonal } from "lucide-react";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 
 export default function ChatForm({
   handleInputChange,
@@ -12,21 +9,22 @@ export default function ChatForm({
   isLoading,
   onSubmit,
 }) {
+  const placeholders = [
+    "Type your message...",
+    "Ask me a question...",
+    "What's on your mind?",
+    "Share a thought...",
+    "Say hello..."
+  ];
+
   return (
-    <form
-      onSubmit={onSubmit}
-      className="border-t border-primary/10 py-4 flex items-center gap-x-2"
-    >
-      <Input
-        disabled={isLoading}
-        value={input}
+    <div className="border-t border-primary/10 pt-4 pb-4 w-full">
+      <PlaceholdersAndVanishInput
+        placeholders={placeholders}
         onChange={handleInputChange}
-        placeholder="Type a message"
-        className="rounded-lg bg-primary/10"
+        onSubmit={onSubmit}
+        className="chat-input backdrop-blur-xl h-12 md:h-14"
       />
-      <Button disabled={isLoading} variant="ghost">
-        <SendHorizonal className="w-6 h-6" />
-      </Button>
-    </form>
+    </div>
   );
 }

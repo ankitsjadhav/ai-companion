@@ -39,22 +39,27 @@ export default function ChatHeader({ companion }) {
   };
 
   return (
-    <div className="flex w-full justify-between items-center border-b border-primary/10 pb-4">
+    <div className="flex w-full justify-between items-center border-b border-white/5 pb-3 sm:pb-4">
       <div className="flex gap-x-2 items-center">
-        <Button onClick={() => router.back()} size="icon" variant="ghost">
-          <ChevronLeft className="h-8 w-8" />
+        <Button onClick={() => router.push("/")} size="icon" variant="ghost" className="h-8 w-8 sm:h-10 sm:w-10">
+          <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
         </Button>
-        <BotAvatar src={companion.src} />
-        <div className="flex flex-col gap-y-1">
+        <div className="flex flex-row items-center mr-1 sm:mr-2 hover:scale-105 transition-transform cursor-default">
+          <BotAvatar src={companion.src} />
+        </div>
+        <div className="flex flex-col gap-y-0.5 sm:gap-y-1">
           <div className="flex items-center gap-x-2">
-            <p className="font-bold">{companion.name}</p>
-            <div className="flex items-center text-xs text-muted-foreground">
+            <p className="text-base sm:text-lg font-extrabold tracking-tight">{companion.name}</p>
+            <div className="hidden sm:flex items-center text-xs text-muted-foreground">
               <MessagesSquare className="w-3 h-3 mr-1" />
               {companion._count.messages}
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Created by {companion.username}
+          <p className="text-[11px] sm:text-xs text-muted-foreground/70 flex items-center tracking-wide">
+            <span className="sm:hidden mr-1.5">{companion._count.messages} chats &bull;</span>
+            <span className="hidden sm:inline">Created by </span>
+            <span className="sm:hidden">by </span>
+            {companion.username}
           </p>
         </div>
       </div>
