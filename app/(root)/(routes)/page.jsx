@@ -35,7 +35,9 @@ const RootPage = async ({ searchParams }) => {
   const categories = await prismadb.category.findMany();
   return (
     <div className="h-full p-4 space-y-2">
-      <SearchInput />
+      <div className="flex flex-col items-center justify-center pt-8 pb-6 md:pt-14 md:pb-10">
+        <SearchInput />
+      </div>
       <Categories data={categories} />
       <Companions data={data} />
     </div>
