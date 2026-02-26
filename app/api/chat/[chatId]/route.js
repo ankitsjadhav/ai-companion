@@ -1,61 +1,48 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage, AIMessage, SystemMessage } from "langchain/schema";
 import { NextResponse } from "next/server";
-
+import { generateResponse } from "@/lib/ai/router";
 import { MemoryManager } from "@/lib/memory";
 import { ratelimit } from "@/lib/rate-limit";
 import prismadb from "@/lib/prismadb";
-
 const RECENT_HISTORY_LENGTH = 10;
-
 export async function POST(request, { params }) {
   try {
     const { prompt } = await request.json();
     const user = await currentUser();
-
     if (!user || !user.firstName || !user.id) {
       return new NextResponse("Unauthorized!", { status: 401 });
     }
-
     const resolvedParams = await params;
     const { chatId } = resolvedParams;
     if (!chatId) {
       return new NextResponse("Missing chatId", { status: 400 });
     }
-
     const identifier = `${request.url}-${user.id}`;
     const { success } = await ratelimit(identifier);
     if (!success) {
       return new NextResponse("Rate limit Exceeded!", { status: 429 });
     }
-
     const companion = await prismadb.companion.findUnique({
       where: { id: chatId, userId: user.id },
     });
-
     if (!companion) {
       return new NextResponse("Companion Not Found.", { status: 404 });
     }
-
     const companionKey = {
       companionName: companion.name,
       userId: user.id,
       modelName: "gemini-2.5-flash",
       companionId: companion.id,
     };
-
     const memoryManager = await MemoryManager.getInstance();
-
     const rawHistory = await memoryManager.readLatestHistory(companionKey);
     if (rawHistory.length === 0) {
       await memoryManager.seedChatHistory(companion.seed, "\n\n", companionKey);
     }
     await memoryManager.writeToHistory(`User: ${prompt}\n`, companionKey);
-
     const systemPrompt = `
     You are ${companion.name}. ${companion.instructions}
-
      IMPORTANT RULES:
       - ALWAYS read and understand the question carefully before responding
       - Start your response by directly addressing what was asked
@@ -67,9 +54,7 @@ export async function POST(request, { params }) {
       - Do not reference previous conversations or questions unless specifically asked
       - Give complete and direct responses
       - ONLY generate plain sentences without a prefix. DO NOT use "${companion.name}:" or "User:"
-     
     `;
-
     const historyMessages = rawHistory
       .split("\n")
       .slice(-RECENT_HISTORY_LENGTH)
@@ -81,45 +66,29 @@ export async function POST(request, { params }) {
           return new AIMessage(line.replace(`${companion.name}:`, "").trim());
         }
       });
-
     const messages = [
       new SystemMessage(systemPrompt),
       ...historyMessages,
       new HumanMessage(prompt),
     ];
-
-    const model = new ChatGoogleGenerativeAI({
-      model: "gemini-2.5-flash",
-      maxOutputTokens: 1000,
-      apiKey: process.env.GEMINI_API_KEY,
-    });
-
-    const modelResponse = await model.invoke(messages);
-    const rawAiResponse =
-      modelResponse?.content?.toString() ||
-      "I took a coffee break ☕️ — your prompt's still waiting! Send it again?";
-
+    const rawAiResponse = await generateResponse(messages);
     const cleanedAiResponse =
       rawAiResponse
         .replace(/^(Human:|User:).*\n?/gm, "")
         .replace(new RegExp(`^${prompt.trim()}\\n?`, "gm"), "")
         .trim() ||
-      "I took a coffee break ☕️ — your prompt's still waiting! Send it again?";
-
+      "I took a coffee break ☕️ your prompt's still waiting! Send it again?";
     await saveMessagesToDb(prompt, cleanedAiResponse, user.id, chatId);
-
     await memoryManager.writeToHistory(
       `${companion.name}: ${cleanedAiResponse}\n`,
       companionKey
     );
-
     return NextResponse.json({ text: cleanedAiResponse });
   } catch (error) {
     console.error("[CHAT_POST_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-
 async function saveMessagesToDb(prompt, cleanedAiResponse, userId, chatId) {
   try {
     await prismadb.message.create({
@@ -130,7 +99,6 @@ async function saveMessagesToDb(prompt, cleanedAiResponse, userId, chatId) {
         companionId: chatId,
       },
     });
-
     await prismadb.message.create({
       data: {
         content: cleanedAiResponse,
