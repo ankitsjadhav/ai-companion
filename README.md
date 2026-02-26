@@ -1,6 +1,6 @@
 # AI Companion
 
-A full-stack web app to create and chat with personalized AI companions. Built with Next.js, Google Gemini AI, and Stripe for subscriptions.
+A fullstack web app to create and chat with personalized AI companions. Built with Next.js, Google Gemini AI, and Stripe for subscriptions.
 
 ---
 
@@ -16,21 +16,21 @@ Explore AI companions with an option to use a demo account or sign up/sign in no
 ### Home
 
 Shows the interface and highlights available AI companions.  
-<img src="./public/home.png" alt="Home" width="700"/>
+<img src="./public/homepage2.webp" alt="Home" width="700"/>
 
 ---
 
-### Companion Creation
+### Chat Interface
 
-Create custom AI companions with avatars, personalities, and instructions.  
-<img src="./public/create.png" alt="Companion Creation" width="700"/>
+Interact with AI companions in a clean, real time chat experience.
+<img src="./public/chat-with-ronaldo.webp" alt="Companion Creation" width="700"/>
 
 ---
 
-### Settings / Subscription Management
+### Create Custom AI Companions
 
-Manage your account, subscription plans, and personal settings.
-<img src="./public/settings.png" alt="Settings" width="700"/>
+Build AI companions with unique avatars, personalities, and instructions.
+<img src="./public/create.webp" alt="Settings" width="700"/>
 
 ---
 
@@ -46,7 +46,7 @@ Manage your account, subscription plans, and personal settings.
 ## Tech Stack
 
 - **Frontend:** Next.js, Tailwind CSS, React Hook Form, Zod
-- **Backend:** Node.js, PostgreSQL (Prisma), Redis, Pinecone, Google Gemini AI
+- **Backend:** Node.js, PostgreSQL (Prisma), Redis, Pinecone, Google Gemini AI, Groq
 - **Infrastructure:** Vercel, Cloudinary, Stripe
 
 ---
