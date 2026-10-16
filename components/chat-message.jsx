@@ -34,7 +34,7 @@ export default function ChatMessage({ role, content, isLoading, src }) {
     >
       {role !== "user" && src && <BotAvatar src={src} />}
       <div className={cn(
-        "rounded-xl px-5 py-3.5 max-w-sm text-sm font-medium leading-7",
+        "rounded-xl px-5 py-3.5 max-w-2xl text-sm font-medium leading-7",
         role === "user" ? "bg-primary/10 dark:bg-[#3B82F6] dark:text-[#F8FAFC]" : "message-ai dark:text-white"
       )}>
         {isLoading ? (
